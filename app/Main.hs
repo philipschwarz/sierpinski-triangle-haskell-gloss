@@ -44,7 +44,8 @@ fillTriangle x y size =
 sierpinskiCarpet :: Int -> Int -> Int -> Picture
 sierpinskiCarpet x y size =
   if size <= minSize
-  then fillTriangle x y size
+  then 
+    fillTriangle x y size
   else
     let size2 = size `div` 2
     in pictures [ sierpinskiCarpet x y size2,
