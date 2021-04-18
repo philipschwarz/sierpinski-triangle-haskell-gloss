@@ -13,6 +13,7 @@ width = 600
 height = 600
 dimensions = (width, height)
 backgroundColour = white
+triangleColour = red
 
 carpetSize = 512
 carpetXPos = 50
@@ -28,22 +29,23 @@ minSize :: Int
 minSize = 8
 
 fillTriangle :: Int -> Int -> Int -> Picture
-fillTriangle x y size = 
-  let 
+fillTriangle x y size =
+  let
     xPos = fromIntegral x
     yPos = fromIntegral y
     side = fromIntegral size
-    p1 = (xPos, yPos)
-    p2 = (xPos + side, yPos)
-    p3 = (xPos, yPos + side)
-    triangle = color red (polygon [p1, p2, p3])
-  in translate horizontalShift verticalShift triangle
+    bottomLeftPoint  = (xPos       , yPos)
+    bottomRightPoint = (xPos + side, yPos)
+    topPoint         = (xPos       , yPos + side)
+    triangle = polygon [bottomLeftPoint, bottomRightPoint, topPoint]
+    colouredTriangle = color triangleColour triangle
+  in translate horizontalShift verticalShift colouredTriangle
 
 sierpinskiCarpet :: Int -> Int -> Int -> Picture
 sierpinskiCarpet x y size =
   if size <= minSize
   then fillTriangle x y size
-  else 
+  else
     let size2 = size `div` 2
     in pictures [ sierpinskiCarpet x y size2,
                   sierpinskiCarpet x (y + size2) size2,
