@@ -45,14 +45,11 @@ sierpinskiCarpet x y size =
   then fillTriangle x y size
   else 
     let size2 = size `div` 2
-    in pictures [
-      sierpinskiCarpet x y size2,
-      sierpinskiCarpet x (y + size2) size2,
-      sierpinskiCarpet (x + size2) y size2 ]
+    in pictures [ sierpinskiCarpet x y size2,
+                  sierpinskiCarpet x (y + size2) size2,
+                  sierpinskiCarpet (x + size2) y size2 ]
 
 main :: IO ()
 main =
-  display
-    window
-    backgroundColour
-    (sierpinskiCarpet carpetXPos carpetYPos carpetSize)
+  let carpet = sierpinskiCarpet carpetXPos carpetYPos carpetSize
+  in display window backgroundColour carpet
