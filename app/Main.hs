@@ -39,7 +39,7 @@ fillTriangle x y size =
     topPoint         = (xPos       , yPos + side)
     triangle = polygon [bottomLeftPoint, bottomRightPoint, topPoint]
     colouredTriangle = color triangleColour triangle
-  in translate horizontalShift verticalShift colouredTriangle
+  in colouredTriangle
 
 sierpinskiCarpet :: Int -> Int -> Int -> Picture
 sierpinskiCarpet x y size =
@@ -54,5 +54,7 @@ sierpinskiCarpet x y size =
 
 main :: IO ()
 main =
-  let carpet = sierpinskiCarpet carpetXPos carpetYPos carpetSize
-  in display window backgroundColour carpet
+  let  
+    carpet = sierpinskiCarpet carpetXPos carpetYPos carpetSize
+    shiftedCarpet = (translate horizontalShift verticalShift carpet)
+  in display window backgroundColour shiftedCarpet
