@@ -7,50 +7,43 @@ import Lib
 import Graphics.Gloss
 import Data.Monoid
 
-windowPos :: (Int, Int)
-windowPos = (0,0)
-windowWidth :: Int
-windowWidth = 600
-windowHeight :: Int
-windowHeight = 600
-windowDimensions :: (Int, Int)
-windowDimensions = (windowWidth, windowHeight)
+title :: [Char]
+title = "Sierpinsky's carpet"
+position :: (Int, Int)
+position = (0,0)
+width :: Int
+width = 600
+height :: Int
+height = 600
+dimensions :: (Int, Int)
+dimensions = (width, height)
 
 window :: Display
-window = InWindow "Sierpinsky's carpet"  windowDimensions windowPos
- 
-backgroundColour :: Color
-backgroundColour = white
- 
-axes :: Picture
-axes = color red (line [ (-10000, 0), (10000,  0) ]) <>
-       color red (line [ (0, -10000), (0,  10000) ])
-poly :: Picture
-poly = polygon [ (-50,-50), ( 0, 0), ( 50,-50), ( 0,100) ]
-poly2 :: Picture
-poly2 = polygon [ (-50,-50), ( 0, 0), ( 50,-50), ( 0,100) ]
-poly3 :: Picture
-poly3 = polygon [ (-50,-50), ( 0, 0), ( 50,-50), ( 0,100) ]
+window = InWindow title dimensions position
 
 minSize :: Int
 minSize = 8
 
-fillTri :: Display -> Int -> Int -> Int -> Picture
-fillTri window x y size =
+fillTriangle :: Int -> Int -> Int -> Picture
+fillTriangle x y size =
   translate
-    (-(fromIntegral windowWidth)/2)
-    (-(fromIntegral windowHeight)/2)
+    (-(fromIntegral width)/2)
+    (-(fromIntegral height)/2)
     (color red (polygon [(fromIntegral x, fromIntegral y), ((fromIntegral x) + (fromIntegral size), (fromIntegral y)), (fromIntegral x, (fromIntegral y) + (fromIntegral size))]))
 
-sierpinskiTri :: Display -> Int -> Int -> Int -> Picture
-sierpinskiTri w x y size =
+sierpinskiTriangle :: Int -> Int -> Int -> Picture
+sierpinskiTriangle x y size =
     if size <= minSize
-    then fillTri w x y size
+    then fillTriangle x y size
     else let size2 = size `div` 2
       in pictures [
-          sierpinskiTri w x y size2,
-          (sierpinskiTri w x (y + size2) size2),
-          (sierpinskiTri w (x + size2) y size2) ]
+        sierpinskiTriangle x y size2,
+        sierpinskiTriangle x (y + size2) size2,
+        sierpinskiTriangle (x + size2) y size2 ]
 
 main :: IO ()
-main = display window backgroundColour (sierpinskiTri window 50 50 512)
+main =
+  display
+    window
+    white
+    (sierpinskiTriangle 50 50 512)
