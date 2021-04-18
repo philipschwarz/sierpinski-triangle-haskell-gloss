@@ -7,24 +7,15 @@ import Lib
 import Graphics.Gloss
 import Data.Monoid
 
-title :: [Char]
 title = "Sierpinsky's carpet"
-windowPosition :: (Int, Int)
 windowPosition = (0,0)
-width :: Int
 width = 600
-height :: Int
 height = 600
-dimensions :: (Int, Int)
 dimensions = (width, height)
-backgroundColour :: Color
 backgroundColour = white
 
-carpetSize :: Int
 carpetSize = 512
-carpetXPos :: Int
 carpetXPos = 50
-carpetYPos :: Int
 carpetYPos = 50
 
 horizontalShift = -(fromIntegral width)/2
@@ -37,19 +28,27 @@ minSize :: Int
 minSize = 8
 
 fillTriangle :: Int -> Int -> Int -> Picture
-fillTriangle x y size =
-  let triangle = (color red (polygon [(fromIntegral x, fromIntegral y), ((fromIntegral x) + (fromIntegral size), (fromIntegral y)), (fromIntegral x, (fromIntegral y) + (fromIntegral size))]))
+fillTriangle x y size = 
+  let 
+    xPos = fromIntegral x
+    yPos = fromIntegral y
+    side = fromIntegral size
+    p1 = (xPos, yPos)
+    p2 = (xPos + side, yPos)
+    p3 = (xPos, yPos + side)
+    triangle = color red (polygon [p1, p2, p3])
   in translate horizontalShift verticalShift triangle
 
 sierpinskiCarpet :: Int -> Int -> Int -> Picture
 sierpinskiCarpet x y size =
-    if size <= minSize
-    then fillTriangle x y size
-    else let size2 = size `div` 2
-      in pictures [
-        sierpinskiCarpet x y size2,
-        sierpinskiCarpet x (y + size2) size2,
-        sierpinskiCarpet (x + size2) y size2 ]
+  if size <= minSize
+  then fillTriangle x y size
+  else 
+    let size2 = size `div` 2
+    in pictures [
+      sierpinskiCarpet x y size2,
+      sierpinskiCarpet x (y + size2) size2,
+      sierpinskiCarpet (x + size2) y size2 ]
 
 main :: IO ()
 main =
