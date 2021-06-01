@@ -1,1 +1,1 @@
-Haskell code for [Sierpinski Triangle - Polyglot FP for Fun and Profit - Haskell and Scala - with minor corrections](https://www.slideshare.net/pjschwarz/sierpinski-triangle-polyglot-fp-for-fun-and-profit-haskell-and-scala-with-minor-corrections).
+Haskell code for [Sierpinski Triangle - Polyglot FP for Fun and Profit - Haskell and Scala](https://www.slideshare.net/pjschwarz/sierpinski-triangle-polyglot-fp-for-fun-and-profit-haskell-and-scala-with-minor-corrections).
