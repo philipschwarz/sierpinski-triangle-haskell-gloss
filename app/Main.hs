@@ -2,12 +2,9 @@ module Main where
 
 import Lib
 
-{-# LANGUAGE OverloadedStrings #-}
-{-# OPTIONS -Wall -fno-warn-type-defaults #-}
 import Graphics.Gloss
-import Data.Monoid
 
-title = "Sierpinsky's carpet"
+title = "Sierpinski"
 windowPosition = (0,0)
 width = 600
 height = 600
@@ -15,18 +12,18 @@ dimensions = (width, height)
 backgroundColour = white
 triangleColour = red
 
-carpetSize = 512
-carpetXPos = 50
-carpetYPos = 50
+triangleSize = 512
+triangleXPos = 50
+triangleYPos = 50
 
 horizontalShift = -(fromIntegral width)/2
 verticalShift = -(fromIntegral height)/2
 
-window :: Display
-window = InWindow title dimensions windowPosition
+windowDisplay :: Display
+windowDisplay = InWindow title dimensions windowPosition
 
 minSize :: Int
-minSize = 8
+minSize = 4
 
 fillTriangle :: Int -> Int -> Int -> Picture
 fillTriangle x y size =
@@ -41,20 +38,18 @@ fillTriangle x y size =
     colouredTriangle = color triangleColour triangle
   in colouredTriangle
 
-sierpinskiCarpet :: Int -> Int -> Int -> Picture
-sierpinskiCarpet x y size =
+sierpinskiTriangle :: Int -> Int -> Int -> Picture
+sierpinskiTriangle x y size =
   if size <= minSize
-  then 
-    fillTriangle x y size
-  else
-    let size2 = size `div` 2
-    in pictures [ sierpinskiCarpet x y size2,
-                  sierpinskiCarpet x (y + size2) size2,
-                  sierpinskiCarpet (x + size2) y size2 ]
+  then fillTriangle x y size
+  else let halfSize = size `div` 2
+       in pictures [ sierpinskiTriangle x y halfSize,
+                     sierpinskiTriangle x (y + halfSize) halfSize,
+                     sierpinskiTriangle (x + halfSize) y halfSize ]
 
 main :: IO ()
 main =
-  let  
-    carpet = sierpinskiCarpet carpetXPos carpetYPos carpetSize
-    shiftedCarpet = (translate horizontalShift verticalShift carpet)
-  in display window backgroundColour shiftedCarpet
+  let
+    triangle = sierpinskiTriangle triangleXPos triangleYPos triangleSize
+    shiftedTriangle = (translate horizontalShift verticalShift triangle)
+  in display windowDisplay backgroundColour shiftedTriangle    
